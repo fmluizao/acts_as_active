@@ -53,12 +53,12 @@
   Disable the default scope and invoke the default all
     args: the same of ActiveRecord::Base#all
 
-calculate_with_inactive(*args)
+=== calculate_with_inactive(*args)
 
   Disable the default scope and invoke the default calculate
     args: the same of ActiveRecord::Base#calculate
 
-count_with_inactive(*args)
+=== count_with_inactive(*args)
 
   Disable the default scope and invoke the default count
     args: the same of ActiveRecord::Base#count
