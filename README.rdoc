@@ -1,0 +1,84 @@
+= acts_as_active
+
+  This plugin override the default behavior of ActiveRecord#destroy method
+  to set an active attribute to false instead of delete the record.
+  The plugin also add a default_scope to hide the inactived records.
+  This plugin assumes the table has a *active* boolean field, with default to true.
+  
+  This plugin is HEAVLY influencied by acts_as_paranoid
+
+= Example
+
+  create_table :users do |t|
+    t.string :name
+    t.string :last_name
+    t.boolean :active, :null => false, :default => true
+  end
+  
+  class User
+    acts_as_active
+  end
+  
+  User.first.destroy
+  UPDATE users SET active = 'f' WHERE id = 1
+  
+  User.first.destroy! #call the original destroy
+  DELETE FROM users WHERE id = 1
+  
+  User.all
+  SELECT * FROM users WHERE active = 't'
+  
+  User.all :conditions => {:name => "joe"}
+  SELECT * FROM users WHERE (name = 'joe') AND (active = 't')
+  
+  User.find_with_inactive :conditions => {:name => "joe"}
+  SELECT * FROM users WHERE (name = 'joe')
+
+= Methods added
+
+== Class Methods
+
+=== acts_as_active(options = {})
+
+  Turn on the plugin. options are:
+    :with - name of the boolean field which indicates that the record is active. default is "active"
+
+=== find_with_inactive(*args)
+
+  Disable the default scope and invoke the default find
+    args: the same of ActiveRecord::Base#find
+
+=== all_with_inactive(*args)
+
+  Disable the default scope and invoke the default all
+    args: the same of ActiveRecord::Base#all
+
+calculate_with_inactive(*args)
+
+  Disable the default scope and invoke the default calculate
+    args: the same of ActiveRecord::Base#calculate
+
+count_with_inactive(*args)
+
+  Disable the default scope and invoke the default count
+    args: the same of ActiveRecord::Base#count
+
+== Instance Methods
+
+=== active?
+
+  Returns the active attribute
+
+=== activate!
+
+  Sets the active attribute to true
+
+=== deactivate!
+
+  Sets the active attribute to true
+
+=== destroy!
+
+  Calls the original destroy
+
+Copyright (c) 2009 Fernando Luizão, released under the MIT license
