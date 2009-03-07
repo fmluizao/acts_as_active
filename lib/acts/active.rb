@@ -39,30 +39,36 @@ module Acts #:nodoc:
           include InstanceMethods
         end
       end
-      
-      def find_with_inactive(*args)
-        with_exclusive_scope { find(*args) }
-      end
-      
-      def all_with_inactive(*args)
-        with_exclusive_scope { all(*args) }
-      end
-      
-      def calculate_with_inactive(*args)
-        with_exclusive_scope { calculate(*args) }
-      end
-      
-      def count_with_inactive(*args)
-        with_exclusive_scope { count(*args) }
-      end
-
-      private
-      def inject_active_in_condition(condition)
-        "(#{condition}) AND (#{self.active_attribute} = #{quote_value(true)})"
-      end
     end
 
     module InstanceMethods
+      def self.included(base)
+        base.extend(ClassMethods)
+      end
+
+      module ClassMethods
+        def find_with_inactive(*args)
+          with_exclusive_scope { find(*args) }
+        end
+        
+        def all_with_inactive(*args)
+          with_exclusive_scope { all(*args) }
+        end
+        
+        def calculate_with_inactive(*args)
+          with_exclusive_scope { calculate(*args) }
+        end
+        
+        def count_with_inactive(*args)
+          with_exclusive_scope { count(*args) }
+        end
+  
+        private
+        def inject_active_in_condition(condition)
+          "(#{condition}) AND (#{self.active_attribute} = #{quote_value(true)})"
+        end
+      end
+
       def active?
         self[active_attribute]
       end
