@@ -1,11 +1,11 @@
 = acts_as_active
 
-  This plugin override the default behavior of ActiveRecord#destroy method
-  to set an active attribute to false instead of delete the record.
-  The plugin also add a default_scope to hide the inactived records.
-  This plugin assumes the table has a *active* boolean field, with default to true.
-  
-  This plugin is HEAVLY influencied by acts_as_paranoid
+This plugin override the default behavior of ActiveRecord#destroy method
+to set an active attribute to false instead of delete the record.
+The plugin also add a default_scope to hide the inactived records.
+This plugin assumes the table has a *active* boolean field, with default to true.
+
+This plugin is HEAVLY influencied by acts_as_paranoid
 
 = Example
 
@@ -80,5 +80,15 @@
 === destroy!
 
   Calls the original destroy
+
+= Caveats
+
+If you want to use default_scope in your model, add it AFTER the acts_as_active call. Example:
+
+  class User
+    acts_as_active
+    default_scope :conditions => {:type => 'admin'}, :order => "name ASC"
+  end
+
 
 Copyright (c) 2009 Fernando Luizão, released under the MIT license
