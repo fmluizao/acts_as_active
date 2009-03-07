@@ -7,6 +7,17 @@ This plugin assumes the table has a *active* boolean field, with default to true
 
 This plugin is HEAVLY influencied by acts_as_paranoid
 
+= Instalation
+
+This plugin depends of default_scope, introduced in Rails 2.3. If you use Rails 2.1 or 2.2,
+install default_scope as a plugin:
+
+  script/plugin install git://github.com/duncanbeevers/default_scope.git
+
+After, install this plugin:
+
+  script/plugin install git://github.com/fernandoluizao/acts_as_active.git
+
 = Example
 
   create_table :users do |t|
