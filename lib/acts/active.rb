@@ -47,20 +47,11 @@ module Acts #:nodoc:
       end
 
       module ClassMethods
-        def find_with_inactive(*args)
-          with_exclusive_scope { find(*args) }
-        end
-        
-        def all_with_inactive(*args)
-          with_exclusive_scope { all(*args) }
-        end
-        
-        def calculate_with_inactive(*args)
-          with_exclusive_scope { calculate(*args) }
-        end
-        
-        def count_with_inactive(*args)
-          with_exclusive_scope { count(*args) }
+        #generate methods without the default_scope
+        %w(find all average calculate count maximum minimum sum).each do |method|
+          define_method "#{method}_with_inactive" do |*args|
+            with_exclusive_scope { send(method, *args) }
+          end
         end
   
         private
