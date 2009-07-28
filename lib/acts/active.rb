@@ -11,7 +11,7 @@ module Acts #:nodoc:
         unless self.included_modules.include?(InstanceMethods) 
           cattr_accessor :active_attribute
           self.active_attribute = (options[:with] || :active).to_sym
-          
+
           #show only active
           default_scope :conditions => {self.active_attribute => true}
 
@@ -31,6 +31,19 @@ module Acts #:nodoc:
                 raise "what did you pass as conditions??"
               end
               default_scope_without_active(scope_options)
+            end
+          end
+
+          if options[:show_inactive_in_associations]
+            alias_method :find_without_active_association, :find
+             
+            def find(*args)
+              #if is called from an association, find inactives too
+              unless caller.grep(/active_record.*associations/).empty?
+                with_exclusive_scope { find_without_active_association(*args) }
+              else
+                find_without_active_association(*args)
+              end
             end
           end
 

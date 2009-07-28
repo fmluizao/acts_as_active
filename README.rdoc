@@ -53,6 +53,7 @@ After, install this plugin:
 
   Turn on the plugin. options are:
     :with - name of the boolean field which indicates that the record is active. default is "active"
+    :show_inactive_in_associations - if you want to show inactive objects in associations, set it to true
 
 === find_with_inactive(*args)
 
