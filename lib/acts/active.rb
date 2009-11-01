@@ -35,14 +35,16 @@ module Acts #:nodoc:
           end
 
           if options[:show_inactive_in_associations]
-            alias_method :find_without_active_association, :find
-             
-            def find(*args)
-              #if is called from an association, find inactives too
-              unless caller.grep(/active_record.*associations/).empty?
-                with_exclusive_scope { find_without_active_association(*args) }
-              else
-                find_without_active_association(*args)
+            class << self
+              alias_method :find_without_active_association, :find
+               
+              def find(*args)
+                #if is called from an association, find inactives too
+                unless caller.grep(/active_record.*associations/).empty?
+                  with_exclusive_scope { find_without_active_association(*args) }
+                else
+                  find_without_active_association(*args)
+                end
               end
             end
           end
